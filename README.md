@@ -7,6 +7,8 @@ Md embed for discord gen
 ## Example
 
 <a href="https://discord.gg/BrnAvMps"><img src="https://md-embed-site.dragonhunter1.repl.co/api/v2/frozen?tg=MD-STATS&hash=3830" height="40"></a>
+
+
 <a href="https://discord.gg/BrnAvMps"><img src="https://md-embed-site.dragonhunter1.repl.co/api/v1/frozen?tg=MD-STATS&hash=3830" height="40"></a>
 
 
