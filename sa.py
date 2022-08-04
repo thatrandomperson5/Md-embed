@@ -1,30 +1,32 @@
-from flask import Flask, redirect, send_file, request, abort
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
 from threading import Thread
 
-def getc(c):
-    global client
-    client = c
-app = Flask('')
-def build(cl, tg, op):
-    raise Exception()
-@app.route('/')
-def home():
-    
-    return redirect("https://discord.gg/Ja5CvWgmdc")
-@app.route("/api")
-def api():
-    if not "tg" in dict(request.args).keys():
-        abort(403)
-    target = request.args.get("tg")
-    op = dict(request.args)
-    del op["tg"]
-    try:
-        a = build(client, target, op)
-    except:
-        a = "gens/fail.png"
-    return send_file(a, mimetype='image/png')
+
+class MyServer(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        self.wfile.write(bytes("<html>Hello. I am alive</html>", "utf-8"))
+    def do_HEAD(self):
+        self.send_header("Content-type", "text/html")
+
+
 def run():
-  app.run(host='0.0.0.0',port=8080)
+    hostName = "0.0.0.0"
+    serverPort = 84
+    webServer = HTTPServer((hostName, serverPort), MyServer)
+    print("Server started http://%s:%s" % (hostName, serverPort))
+
+    try:
+        webServer.serve_forever()
+    except KeyboardInterrupt:
+        pass
+
+    webServer.server_close()
+    print("Server stopped.")
+  
 
 def keep_alive():
     t = Thread(target=run)

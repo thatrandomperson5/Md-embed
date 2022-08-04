@@ -98,7 +98,7 @@ support = true
 language = "python3"
 # Never attempt to install `unit_tests`. If there are packages that are being
 # guessed wrongly, add them here.
-ignoredPackages = ["unit_tests"]
+ignoredPackages = ["unit_tests", "numpy", "discord", "flask", "pyzmq", "zmq", "*", "requests"]
 
   [packager.features]
   enabledForHosting = false
