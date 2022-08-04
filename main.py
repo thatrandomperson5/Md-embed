@@ -239,7 +239,14 @@ async def generate(interaction: discord.Interaction):
     """Generate a tag to embed an user profile in markdown."""
     themsg = msg(interaction.user)
     await interaction.response.send_message(**themsg())
-
+@client.tree.command()
+async def styles(interaction: discord.Interaction):
+    """Show all the versions of style"""
+    embeds = []
+    embed1=discord.Embed(title="V1", description="Version 1 style", color=0x0eff00)
+    embed1.set_thumbnail(url="https://thatrandomperson5.github.io/Md-embed/resources/64CA7A54-AB6D-4148-8397-1A4A4F01F513.jpeg")
+    embeds.append(embed1)
+    await interaction.response.send_message(ephemeral=True, embeds = embeds)
 
 #running the program
 keep_alive()
