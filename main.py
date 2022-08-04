@@ -167,6 +167,28 @@ class eCreator(discord.ui.View):
     async def finish(self, interaction: discord.Interaction, button: discord.ui.Button):
         if None in self.parent.settings.values():
             await interaction.response.send_message("You need to fill out all the options first!", ephemeral=True)
+        else:
+            await interaction.response.edit_message(view=None, embed=self.makeEndEmbed())
+    def makeEndEmbed(self):
+        settings = self.parent.settings
+        if settings["Advanced"]: a = ", Advanced"
+        else: a = ""
+        o = self.createEndData(settings)
+        embed=discord.Embed(title="Embed Created!", description="Your {v}{a} embed!".format(v=settings["Version"],a=a), color=0xc10ae6)
+        embed.add_field(name="Output", value="```{gen}```".format(gen=o[0]), inline=False)
+        embed.add_field(name="Example", value="```{exm}```".format(exm=o[1]), inline=True)
+        return embed
+    def createEndData(self, settings):
+        url1 = settings["Link"]
+        splarget = settings["Target"].split("#")
+        url2 = f"https://md-embed-site.dragonhunter1.repl.co/api/{settings['Version']}?tg={'#'.join(splarget[:-1])}&hash={splarget[-1]}"
+        if settings["Advanced"]:
+            out = "html\n<a href='{href}'><img height='40' alt='discord-profile' src='{src}'></a>\n".format(href=url1, src=url2)
+            exm = "md\n# Some markdown\n\n<a href='{href}'><img height='40' alt='discord-profile' src='{src}'></a>\n\n## Some other markdown\n".format(href=url1, src=url2)
+        else:
+            out= "md\n![Discord Profile]({src})\n".format(src=url2)
+            exm = "md\n# Some markdown\n![Discord Profile]({src})\n## Some other markdown\n".format(src=url2)
+        return [out, exm]
     @discord.ui.select(placeholder="Version...", options=[
         discord.SelectOption(label='v1', description='Version 1 style', emoji='1️⃣'),
         discord.SelectOption(label='v2', description='Version 2 style', emoji='2️⃣'),
