@@ -6,6 +6,7 @@ import json as js
 import requests
 import myDiscordExt
 import datetime
+import re
 #intents setup so you don't have too
 
 intents = discord.Intents().all()
@@ -66,9 +67,9 @@ async def update(after):
     print(req.text)
 
 
-@client.event
-async def on_member_update(before, after: discord.Member):
-    await update(after)
+#@client.event
+#async def on_member_update(before, after: discord.Member):
+    #await update(after)
 
 
 @client.event
@@ -106,33 +107,82 @@ async def on_ready():
     print(req.text)
 
 class TextInput(discord.ui.Modal):
-    def __init__(self, q, pl, oninput, onerror):
+    def __init__(self, q, pl, oninput, onerror, **kwargs):
+        super().__init__(title=q)
         self.oni = oninput
         self.one = onerror
+        self.kwargs = kwargs
         self.q = discord.ui.TextInput(
         label=q,
         placeholder=pl,
         )
-        super().__init__(title=q)
+        self.add_item(self.q)
+        
     async def on_submit(self, interaction: discord.Interaction):
-        self.oni(interaction)
+        await self.oni(interaction,self.q.value,**self.kwargs)
 
-    async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
-        self.one(interaction)
+    #async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
+        #await self.one(interaction)
+        #print(error)
 class eCreator(discord.ui.View):
     def __init__(self, parent):
-        self.parent = parent
+        self.parent: msg = parent
         super().__init__(timeout=None)
     @discord.ui.button(label='Set Target', style=discord.ButtonStyle.red)
     async def target(self, interaction: discord.Interaction, button: discord.ui.Button):
-        pass
+        await interaction.response.send_modal(TextInput("Set Target:", 
+                                                        "target username and hash go here, example: example#9999",
+                                                        self.ontargetset,
+                                                        self.onfail,
+                                                        
+                                                       ))
+    async def ontargetset(self, interaction: discord.Interaction,ans):
+        match = re.search(r"^(.+)(#)([\d][\d][\d][\d])$", ans, flags=re.UNICODE)
+        if not match:
+            await interaction.response.send_message("Invalid target", ephemeral=True)
+        else: 
+            self.parent.settings["Target"] = ans
+            await interaction.response.edit_message(embed=self.parent.starting_embed(self.parent.author))
+            await interaction.followup.send("Target Set.", ephemeral=True)
+            
+    async def onfail(self, interaction: discord.Interaction):
+        await interaction.response.send_message(content="Oops, something went wrong!", ephemeral=True)
     @discord.ui.button(label='Set Link', style=discord.ButtonStyle.grey)
     async def link(self, interaction: discord.Interaction, button: discord.ui.Button):
-        pass
+        await interaction.response.send_modal(TextInput("Set Link:", 
+                                                        "URL here...",
+                                                        self.onlinkset,
+                                                        self.onfail,
+                                                        
+                                                       ))
+    async def onlinkset(self, interaction: discord.Interaction, ans):
+        match = re.search(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)", ans)
+        if not match:
+            await interaction.response.send_message("Invalid URL", ephemeral=True)
+        else: 
+            self.parent.settings["Link"] = ans
+            await interaction.response.edit_message(embed=self.parent.starting_embed(self.parent.author))
+            await interaction.followup.send("Link Set.", ephemeral=True)
     @discord.ui.button(label="Finish", style=discord.ButtonStyle.green)
     async def finish(self, interaction: discord.Interaction, button: discord.ui.Button):
         if None in self.parent.settings.values():
             await interaction.response.send_message("You need to fill out all the options first!", ephemeral=True)
+    @discord.ui.select(placeholder="Version...", options=[
+        discord.SelectOption(label='v1', description='Version 1 style', emoji='1️⃣'),
+        discord.SelectOption(label='v2', description='Version 2 style', emoji='2️⃣'),
+    ])
+    async def version(self, interaction: discord.Interaction, select: discord.ui.Select):
+        self.parent.settings["Version"] = select.values[0]
+        await interaction.response.edit_message(embed=self.parent.starting_embed(self.parent.author))
+        await interaction.followup.send("Version Set.", ephemeral=True)
+    @discord.ui.select(placeholder="Advanced?", options=[
+        discord.SelectOption(label='True', description='Advanced style (Compact, linked, html)', emoji='✔️'),
+        discord.SelectOption(label="False", description='Normal style (Large, link does not work, markdown)', emoji='❌'),
+    ])
+    async def adv(self, interaction: discord.Interaction, select: discord.ui.Select):
+        self.parent.settings["Advanced"] = eval(select.values[0])
+        await interaction.response.edit_message(embed=self.parent.starting_embed(self.parent.author))
+        await interaction.followup.send("Advanced? Set.", ephemeral=True)  
 class msg(myDiscordExt.Message):
     def __init__(self, author: discord.Interaction.user):
         super().__init__()
@@ -143,6 +193,7 @@ class msg(myDiscordExt.Message):
             "Advanced": True,
         }
         self.view = eCreator(self)
+        self.author = author
         self.add_embed(self.starting_embed(author))
         self.eph = True
         
@@ -158,7 +209,7 @@ class msg(myDiscordExt.Message):
     def valueTree(self, val):
         out = ""
         for x, y in list(val.items()):
-            out += "\n    **" + x + ":** " + str(y)
+            out += "\n    •**" + x + ":** " + str(y)
         return out   
 
 @client.tree.command()
