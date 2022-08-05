@@ -13,7 +13,7 @@ Md embed for discord gen
 
 
 # Check it out on [Discord](https://discord.gg/BrnAvMps)
-You can get all the info you need here!
+You can get all the info you need there!
 
 
 
