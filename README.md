@@ -1,5 +1,3 @@
-![](https://md-embed-site.dragonhunter1.repl.co/api/v2?tg=MD-STATS&hash=3830)
-
 
 # Md-embed
 Md embed for discord gen
