@@ -18,9 +18,11 @@ You can get all the info you need there!
 
 
 
+# How to?
 
+Go to the [discord](https://discord.gg/BrnAvMps) and navigate to **#commands**, from there run **/generate** and follow the instructions.
 
-
+# Solving errors, the guide
 
 
 ## WARNING
