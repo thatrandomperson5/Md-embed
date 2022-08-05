@@ -23,7 +23,20 @@ You can get all the info you need there!
 Go to the [discord](https://discord.gg/BrnAvMps) and navigate to **#commands**, from there run **/generate** and follow the instructions.
 
 # Solving errors, the guide
+## Basic questions
+## Error screens
+### Internal Server Error 500
+An issue in the code. Write an issue and give as much detail as possible
 
+### Not a member 404 
+The api couldn't locate you. make sure you have joined the discord.
+
+### Failed to load
+A accounted for error. make sure you have a vailid user and hash. If it still does not work go to **#support** on the discord.
+
+### 403 forbidden
+
+You are missing some key url parameters. make sure you have a user, hash and version.
 
 ## WARNING
 This project is under strict copyright.
