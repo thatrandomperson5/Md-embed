@@ -29,6 +29,10 @@ The api is slow. Github's user content proxy will timeout. You can always freeze
 ### It's not updating!
 Updating can take awhile. When you get rate-limited on the api it re-directs you do the frozen version, so it won't update untill you make non-limited request.
 
+### It only loads when i go directly to the website
+This is usally becuase i did not implement url encoding. Go to the site directly and copy the url. Then replace. This should url encode your url.
+
+
 ## Error screens
 
 ### Internal Server Error 500
