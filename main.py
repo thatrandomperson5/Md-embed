@@ -246,6 +246,9 @@ async def styles(interaction: discord.Interaction):
     embed1=discord.Embed(title="V1", description="Version 1 style", color=0x0eff00)
     embed1.set_thumbnail(url="https://thatrandomperson5.github.io/Md-embed/resources/64CA7A54-AB6D-4148-8397-1A4A4F01F513.jpeg")
     embeds.append(embed1)
+    embed2=discord.Embed(title="V2", description="Version 2 style", color=0x0eff00)
+    embed2.set_thumbnail(url="https://thatrandomperson5.github.io/Md-embed/resources/616C2453-0E2C-45FD-AD84-904F471FA5F8.jpeg")
+    embeds.append(embed2)
     await interaction.response.send_message(ephemeral=True, embeds = embeds)
 
 #running the program

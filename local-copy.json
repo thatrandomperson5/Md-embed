@@ -1,10 +1,14 @@
 {
     "910899642236043294": {
-        "status": "idle",
+        "status": "offline",
         "avatar": "https://cdn.discordapp.com/avatars/910899642236043294/33d92fd0db63bf9cdd5e8b92db83d76a.png?size=1024"
     },
     "1003302664290963456": {
         "status": "online",
         "avatar": "https://cdn.discordapp.com/avatars/1003302664290963456/3c6844d43a4fd306a96dfef9bdd339ea.png?size=1024"
+    },
+    "996074305584644096": {
+        "status": "idle",
+        "avatar": "https://cdn.discordapp.com/avatars/996074305584644096/22f075e4db49e10f76df75ae1678522d.png?size=1024"
     }
 }
